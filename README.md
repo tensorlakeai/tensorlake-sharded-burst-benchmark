@@ -18,7 +18,7 @@ Each result records:
 
 ```sh
 cp env.example .env
-npm install
+pnpm install --frozen-lockfile
 ```
 
 Set `TENSORLAKE_API_KEY` in `.env`.
@@ -26,13 +26,13 @@ Set `TENSORLAKE_API_KEY` in `.env`.
 ## Run
 
 ```sh
-npm run bench:tensorlake:nested
+pnpm run bench:tensorlake:nested
 ```
 
 For a smaller smoke test:
 
 ```sh
-npm run bench:tensorlake:nested -- --shards 2 --children-per-shard 3
+pnpm run bench:tensorlake:nested -- --shards 2 --children-per-shard 3
 ```
 
 Outputs are written to `results/<run-id>/raw.jsonl`, `results/<run-id>/shards.jsonl`, and `results/<run-id>/summary.json`.
@@ -40,7 +40,7 @@ Outputs are written to `results/<run-id>/raw.jsonl`, `results/<run-id>/shards.js
 ## Options
 
 ```sh
-npm run bench:tensorlake:nested -- \
+pnpm run bench:tensorlake:nested -- \
   --shards 1000 \
   --children-per-shard 100 \
   --shard-create-concurrency 100 \
@@ -50,3 +50,11 @@ npm run bench:tensorlake:nested -- \
 The older `bench:tensorlake` command is a flat local burst harness. It is useful for small smoke tests, but it is not the correct topology for the 1000-shard benchmark because it makes the laptop initiate every child sandbox request.
 
 The nested worker uses Tensorlake APIs directly from inside each shard sandbox, so the laptop only creates the shard sandboxes and starts one worker command per shard.
+
+## Dependency installation
+
+Use Node.js 22+ and pnpm 11.28.5. Run `pnpm install --frozen-lockfile` before the
+project build/test commands. The committed policy requires registry releases
+to be at least 24 hours old, rejects missing publish dates, rechecks frozen
+locks, and disables install lifecycle scripts. Run reviewed build steps
+explicitly; do not bypass the delay for a newly published dependency.
